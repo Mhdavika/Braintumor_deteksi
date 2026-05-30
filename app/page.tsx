@@ -3,6 +3,8 @@ import DetectionSection from "@/components/home/DetectionSection";
 import HowItWorks from "@/components/home/HowItWorks";
 import FeatureSection from "@/components/home/FeatureSection";
 import DisclaimerSection from "@/components/home/DisclaimerSection";
+import FAQSection from "@/components/home/FAQSection";
+import HealthChatbot from "@/features/chatbot/components/HealthChatbot";
 
 export default function HomePage() {
   return (
@@ -12,6 +14,8 @@ export default function HomePage() {
       <HowItWorks />
       <FeatureSection />
       <DisclaimerSection />
+      <FAQSection />
+      <HealthChatbot />
     </main>
   );
 }

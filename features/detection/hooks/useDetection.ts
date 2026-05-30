@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 import { DetectionResult } from "../types/detection.type";
 import {
@@ -31,10 +32,16 @@ export function useDetection() {
 
     if (!validation.valid) {
       setErrorMessage(validation.message);
+      toast.error(validation.message);
       setFile(null);
       setPreviewUrl("");
       setResult(null);
+      setLoadingStep("idle");
       return;
+    }
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
     }
 
     setErrorMessage("");
@@ -42,11 +49,14 @@ export function useDetection() {
     setPreviewUrl(URL.createObjectURL(selectedFile));
     setResult(null);
     setLoadingStep("idle");
+
+    toast.success("Gambar MRI berhasil dipilih.");
   }
 
   async function handleDetect() {
     if (!file) {
       setErrorMessage("Silakan upload gambar MRI terlebih dahulu.");
+      toast.error("Silakan upload gambar MRI terlebih dahulu.");
       return;
     }
 
@@ -59,8 +69,11 @@ export function useDetection() {
 
       if (!validation.valid) {
         setErrorMessage(validation.message);
+        toast.error(validation.message);
         return;
       }
+
+      toast.info("Memulai proses deteksi...");
 
       setLoadingStep("analyzing");
       const detectionResult = await predictBrainTumor(file);
@@ -93,20 +106,29 @@ export function useDetection() {
       });
 
       setLoadingStep("done");
+      toast.success("Deteksi berhasil dan riwayat sudah disimpan.");
     } catch (error) {
       console.error(error);
       setErrorMessage("Terjadi kesalahan saat proses deteksi.");
+      toast.error("Terjadi kesalahan saat proses deteksi.");
+      setLoadingStep("idle");
     } finally {
       setIsLoading(false);
     }
   }
 
   function resetDetection() {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
     setFile(null);
     setPreviewUrl("");
     setResult(null);
     setErrorMessage("");
     setLoadingStep("idle");
+
+    toast.info("Form deteksi berhasil direset.");
   }
 
   return {

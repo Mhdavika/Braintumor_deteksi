@@ -17,14 +17,25 @@ export default function UploadBox({
   onSelectFile,
 }: UploadBoxProps) {
   const [viewMode, setViewMode] = useState<"original" | "detected">("original");
+  const [isDragging, setIsDragging] = useState(false);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0];
-
     if (!selectedFile) return;
 
     setViewMode("original");
     onSelectFile(selectedFile);
+  }
+
+  function handleDrop(event: React.DragEvent<HTMLLabelElement>) {
+    event.preventDefault();
+    setIsDragging(false);
+
+    const droppedFile = event.dataTransfer.files?.[0];
+    if (!droppedFile) return;
+
+    setViewMode("original");
+    onSelectFile(droppedFile);
   }
 
   const detectedImageUrl = annotatedImage
@@ -79,7 +90,19 @@ export default function UploadBox({
         </div>
       )}
 
-      <label className="flex min-h-[360px] cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-blue-300 bg-blue-50/40 p-6 text-center transition hover:bg-blue-50 dark:border-blue-900 dark:bg-slate-950">
+      <label
+        onDragOver={(e) => {
+          e.preventDefault();
+          setIsDragging(true);
+        }}
+        onDragLeave={() => setIsDragging(false)}
+        onDrop={handleDrop}
+        className={`flex min-h-[360px] cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed p-6 text-center transition ${
+          isDragging
+            ? "scale-[1.01] border-blue-600 bg-blue-100 dark:bg-blue-950"
+            : "border-blue-300 bg-blue-50/40 hover:bg-blue-50 dark:border-blue-900 dark:bg-slate-950"
+        }`}
+      >
         {imageToShow ? (
           <img
             src={imageToShow}
@@ -108,7 +131,7 @@ export default function UploadBox({
       </label>
 
       {errorMessage && (
-        <p className="mt-4 rounded-2xl bg-red-50 p-3 text-sm text-red-700">
+        <p className="mt-4 rounded-2xl bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950/40 dark:text-red-300">
           {errorMessage}
         </p>
       )}

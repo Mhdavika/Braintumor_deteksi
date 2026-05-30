@@ -120,3 +120,14 @@ export async function getDetectionHistoryById(
 
   return data;
 }
+
+export async function deleteDetectionHistory(id: string) {
+  const { error } = await supabase
+    .from("detection_history")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
