@@ -40,24 +40,15 @@ export default function Navbar() {
           </div>
 
           <div>
-            <p className="font-extrabold text-blue-600">BrainScan AI</p>
+            <p className="font-extrabold text-blue-600">BrainScan </p>
             <p className="text-xs text-slate-500">Deteksi Tumor Otak</p>
           </div>
         </Link>
 
         <div className="hidden items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300 md:flex">
           <Link href="/">Beranda</Link>
-          <Link href="/tentang">Tentang</Link>
           <Link href="/informasi">Informasi</Link>
           <Link href="/riwayat">Riwayat</Link>
-
-          {user ? (
-            <button onClick={handleLogout} className="text-red-600">
-              Logout
-            </button>
-          ) : (
-            <Link href="/login">Login</Link>
-          )}
 
           <ThemeToggle />
         </div>

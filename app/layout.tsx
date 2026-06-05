@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import ThemeProvider from "@/components/theme/ThemeProvider";
 import { Toaster } from "sonner";
+import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "BrainScan AI",

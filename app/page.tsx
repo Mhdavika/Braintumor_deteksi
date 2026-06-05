@@ -5,6 +5,7 @@ import FeatureSection from "@/components/home/FeatureSection";
 import DisclaimerSection from "@/components/home/DisclaimerSection";
 import FAQSection from "@/components/home/FAQSection";
 import HealthChatbot from "@/features/chatbot/components/HealthChatbot";
+import Footer from "@/components/layout/Footer";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,8 @@ export default function HomePage() {
       <DisclaimerSection />
       <FAQSection />
       <HealthChatbot />
+      <Footer />
     </main>
   );
 }
+

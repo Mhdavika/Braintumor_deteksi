@@ -116,11 +116,11 @@ export default function InformasiPage() {
           </div>
 
           <h1 className="mt-5 text-4xl font-bold leading-tight text-slate-900 dark:text-white md:text-5xl">
-            Informasi 4 Kelas Deteksi Tumor Otak
+            Informasi 4 Kelas Tumor Otak
           </h1>
 
           <p className="mt-5 max-w-4xl leading-8 text-slate-600 dark:text-slate-300">
-            Model BrainScan AI dilatih untuk mengenali empat kelas hasil, yaitu
+            Model BrainScan  dilatih untuk mengenali empat kelas hasil, yaitu
             Glioma, Meningioma, Pituitary, dan No Tumor. Halaman ini menjelaskan
             gambaran umum dari masing-masing kelas agar pengguna lebih memahami
             hasil analisis.
@@ -232,7 +232,7 @@ export default function InformasiPage() {
         <div className="mt-10 rounded-3xl border border-yellow-200 bg-yellow-50 p-6 text-yellow-900 dark:border-yellow-900 dark:bg-yellow-950/40 dark:text-yellow-200">
           <h2 className="font-bold">Disclaimer Medis</h2>
           <p className="mt-2 leading-7">
-            Informasi pada halaman ini hanya untuk edukasi. BrainScan AI tidak
+            Informasi pada halaman ini hanya untuk edukasi. BrainScan  tidak
             menggantikan diagnosis dokter, radiolog, atau tenaga medis
             profesional. Jika hasil deteksi menunjukkan area mencurigakan atau
             pengguna mengalami gejala tertentu, lakukan pemeriksaan medis lebih

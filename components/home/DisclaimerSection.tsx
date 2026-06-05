@@ -13,7 +13,7 @@ export default function DisclaimerSection() {
             Penting untuk Diketahui
           </h2>
           <p className="mt-2 leading-7 text-slate-600 dark:text-slate-300">
-            BrainScan AI adalah alat bantu berbasis AI untuk mendeteksi
+            BrainScan  adalah alat bantu berbasis AI untuk mendeteksi
             kemungkinan tumor otak dari gambar MRI. Hasil tidak dapat
             menggantikan diagnosis profesional dari dokter.
           </p>
