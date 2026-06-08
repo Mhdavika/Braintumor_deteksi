@@ -13,6 +13,13 @@ export type DetectionItem = {
   box?: DetectionBox;
 };
 
+export type GlcmFeatures = {
+  contrast: number;
+  correlation: number;
+  energy: number;
+  homogeneity: number;
+};
+
 export type DetectionResult = {
   result: string;
   probability: string;
@@ -22,6 +29,7 @@ export type DetectionResult = {
   image_url?: string;
   annotated_image?: string;
   annotated_image_url?: string;
+  glcm_features?: GlcmFeatures;
 };
 
 export type DetectionHistory = {
@@ -34,6 +42,7 @@ export type DetectionHistory = {
   image_url: string;
   annotated_image_url: string | null;
   detections: DetectionItem[] | null;
+  glcm_features?: GlcmFeatures | null;
   patient_name: string | null;
   notes: string | null;
   created_at: string;

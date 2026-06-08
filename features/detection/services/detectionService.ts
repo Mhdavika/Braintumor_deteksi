@@ -81,8 +81,9 @@ export async function saveDetectionHistory(params: {
     status: params.result.status,
     risk_level: params.result.risk_level,
     image_url: params.imageUrl,
-    annotated_image_url: params.annotatedImageUrl,
-    detections: params.result.detections,
+    annotated_image_url: params.annotatedImageUrl || null,
+    detections: params.result.detections ?? [],
+    glcm_features: params.result.glcm_features ?? null,
     patient_name: params.patientName || null,
     notes: params.notes || null,
   });

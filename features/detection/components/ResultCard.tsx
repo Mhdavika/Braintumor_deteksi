@@ -1,7 +1,15 @@
 "use client";
 
 import { DetectionResult } from "../types/detection.type";
-import { AlertTriangle, CheckCircle2, Download } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Download,
+  Activity,
+  Waves,
+  Grid2X2,
+  ScanLine,
+} from "lucide-react";
 
 type ResultCardProps = {
   result: DetectionResult | null;
@@ -94,6 +102,72 @@ export default function ResultCard({
               {result.status}
             </p>
           </div>
+
+          {result.glcm_features && (
+            <div className="rounded-2xl border bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950">
+              <div className="mb-4 flex items-center gap-2">
+                <Grid2X2 size={20} className="text-blue-600" />
+                <div>
+                  <h3 className="font-bold text-slate-900 dark:text-white">
+                    Analisis Tekstur GLCM
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Gray Level Co-occurrence Matrix untuk fitur tekstur citra MRI
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl bg-white p-4 dark:bg-slate-900">
+                  <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
+                    <Activity size={15} />
+                    Contrast
+                  </div>
+                  <p className="text-lg font-bold text-slate-900 dark:text-white">
+                    {result.glcm_features.contrast}
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-white p-4 dark:bg-slate-900">
+                  <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
+                    <Waves size={15} />
+                    Correlation
+                  </div>
+                  <p className="text-lg font-bold text-slate-900 dark:text-white">
+                    {result.glcm_features.correlation}
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-white p-4 dark:bg-slate-900">
+                  <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
+                    <ScanLine size={15} />
+                    Energy
+                  </div>
+                  <p className="text-lg font-bold text-slate-900 dark:text-white">
+                    {result.glcm_features.energy}
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-white p-4 dark:bg-slate-900">
+                  <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
+                    <Grid2X2 size={15} />
+                    Homogeneity
+                  </div>
+                  <p className="text-lg font-bold text-slate-900 dark:text-white">
+                    {result.glcm_features.homogeneity}
+                  </p>
+                </div>
+              </div>
+
+              <p className="mt-4 text-xs leading-6 text-slate-500 dark:text-slate-400">
+                Nilai GLCM digunakan untuk menganalisis pola tekstur citra MRI.
+                Contrast menunjukkan perbedaan intensitas piksel, correlation
+                menunjukkan hubungan antar piksel, energy menunjukkan
+                keseragaman tekstur, dan homogeneity menunjukkan tingkat
+                kemiripan piksel.
+              </p>
+            </div>
+          )}
 
           {result.detections?.length > 0 && (
             <div>

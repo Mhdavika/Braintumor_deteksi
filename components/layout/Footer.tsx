@@ -72,13 +72,6 @@ export default function Footer() {
               </Link>
 
               <Link
-                href="/tentang"
-                className="block transition hover:text-blue-600"
-              >
-                Tentang Kami
-              </Link>
-
-              <Link
                 href="/informasi"
                 className="block transition hover:text-blue-600"
               >

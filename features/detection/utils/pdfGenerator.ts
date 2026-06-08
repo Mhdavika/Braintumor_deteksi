@@ -48,7 +48,7 @@ export async function downloadDetectionPDF({
   pdf.setTextColor(255, 255, 255);
   pdf.setFont("helvetica", "bold");
   pdf.setFontSize(16);
-  pdf.text("BrainScan AI", margin + 6, y);
+  pdf.text("BrainScan", margin + 6, y);
 
   pdf.setFont("helvetica", "normal");
   pdf.setFontSize(10);
