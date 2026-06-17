@@ -14,10 +14,18 @@ import { validateMRIFile } from "../utils/fileValidation";
 type LoadingStep =
   | "idle"
   | "validating"
-  | "uploading"
   | "analyzing"
+  | "uploading"
   | "saving"
   | "done";
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function getRandomDelay(min = 5000, max = 10000) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 export function useDetection() {
   const [file, setFile] = useState<File | null>(null);
@@ -63,22 +71,33 @@ export function useDetection() {
     try {
       setIsLoading(true);
       setErrorMessage("");
+      setResult(null);
+
+      const minimumLoadingTime = getRandomDelay(5000, 10000);
+      const startTime = Date.now();
 
       setLoadingStep("validating");
+      await delay(1200);
+
       const validation = validateMRIFile(file);
 
       if (!validation.valid) {
         setErrorMessage(validation.message);
         toast.error(validation.message);
+        setLoadingStep("idle");
         return;
       }
 
       toast.info("Memulai proses deteksi...");
 
       setLoadingStep("analyzing");
+      await delay(2500);
+
       const detectionResult = await predictBrainTumor(file);
 
       setLoadingStep("uploading");
+      await delay(1500);
+
       const imageUrl = await uploadImageToSupabase(file);
 
       let annotatedImageUrl = "";
@@ -91,6 +110,7 @@ export function useDetection() {
       }
 
       setLoadingStep("saving");
+      await delay(1500);
 
       await saveDetectionHistory({
         fileName: file.name,
@@ -98,6 +118,13 @@ export function useDetection() {
         imageUrl,
         annotatedImageUrl,
       });
+
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = minimumLoadingTime - elapsedTime;
+
+      if (remainingTime > 0) {
+        await delay(remainingTime);
+      }
 
       setResult({
         ...detectionResult,

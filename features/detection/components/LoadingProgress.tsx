@@ -55,6 +55,8 @@ export default function LoadingProgress({ step }: LoadingProgressProps) {
                 className={`text-sm ${
                   isActive
                     ? "font-semibold text-blue-600"
+                    : isDone
+                    ? "font-medium text-green-600"
                     : "text-slate-500 dark:text-slate-400"
                 }`}
               >
