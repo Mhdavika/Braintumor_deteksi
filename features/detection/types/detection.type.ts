@@ -24,7 +24,8 @@ export type DetectionResult = {
   result: string;
   probability: string;
   status: string;
-  risk_level: RiskLevel;
+  confidence_level?: string;
+  risk_level?: string;
   detections: DetectionItem[];
   image_url?: string;
   annotated_image?: string;
@@ -38,6 +39,7 @@ export type DetectionHistory = {
   result: string;
   probability: string;
   status: string;
+  confidence_level?: string;
   risk_level: RiskLevel;
   image_url: string;
   annotated_image_url: string | null;

@@ -84,7 +84,7 @@ export async function downloadDetectionPDF({
   pdf.setFont("helvetica", "normal");
   pdf.setFontSize(11);
   pdf.text(`Probabilitas: ${result.probability}`, margin + 6, y + 30);
-  pdf.text(`Status Risiko: ${result.risk_level}`, margin + 6, y + 37);
+  pdf.text(`Status Risiko: ${result.confidence_level}`, margin + 6, y + 37);
 
   y += 54;
 

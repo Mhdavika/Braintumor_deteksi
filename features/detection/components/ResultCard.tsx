@@ -5,10 +5,6 @@ import {
   AlertTriangle,
   CheckCircle2,
   Download,
-  Activity,
-  Waves,
-  Grid2X2,
-  ScanLine,
 } from "lucide-react";
 
 type ResultCardProps = {
@@ -17,12 +13,12 @@ type ResultCardProps = {
   onDownloadPDF: () => void;
 };
 
-function getRiskStyle(risk?: string) {
-  if (risk === "Tinggi") {
+function getConfidenceStyle(level?: string) {
+  if (level === "Tinggi") {
     return "bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300";
   }
 
-  if (risk === "Sedang") {
+  if (level === "Sedang") {
     return "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/40 dark:text-yellow-300";
   }
 
@@ -34,6 +30,8 @@ export default function ResultCard({
   isLoading,
   onDownloadPDF,
 }: ResultCardProps) {
+  const confidenceLevel = result?.confidence_level || result?.risk_level || "-";
+
   const isTumorDetected =
     result &&
     result.result.toLowerCase() !== "no tumor" &&
@@ -50,7 +48,7 @@ export default function ResultCard({
         <div className="flex min-h-[360px] flex-col items-center justify-center text-center">
           <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600" />
           <p className="font-semibold text-slate-700 dark:text-slate-200">
-            AI sedang menganalisis gambar MRI...
+            Model sedang menganalisis gambar MRI...
           </p>
           <p className="mt-2 text-sm text-slate-500">
             Mohon tunggu beberapa detik.
@@ -91,9 +89,9 @@ export default function ResultCard({
             <p className="mt-1 text-sm">Probabilitas: {result.probability}</p>
           </div>
 
-          <div className={`rounded-2xl p-4 ${getRiskStyle(result.risk_level)}`}>
-            <p className="text-sm font-semibold">Status Tingkat Risiko</p>
-            <p className="mt-1 text-xl font-bold">{result.risk_level}</p>
+          <div className={`rounded-2xl p-4 ${getConfidenceStyle(confidenceLevel)}`}>
+            <p className="text-sm font-semibold">Status Risiko</p>
+            <p className="mt-1 text-xl font-bold">{confidenceLevel}</p>
           </div>
 
           <div>
@@ -102,72 +100,6 @@ export default function ResultCard({
               {result.status}
             </p>
           </div>
-
-          {result.glcm_features && (
-            <div className="rounded-2xl border bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-950">
-              <div className="mb-4 flex items-center gap-2">
-                <Grid2X2 size={20} className="text-blue-600" />
-                <div>
-                  <h3 className="font-bold text-slate-900 dark:text-white">
-                    Analisis Tekstur GLCM
-                  </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Gray Level Co-occurrence Matrix untuk fitur tekstur citra MRI
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-xl bg-white p-4 dark:bg-slate-900">
-                  <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
-                    <Activity size={15} />
-                    Contrast
-                  </div>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">
-                    {result.glcm_features.contrast}
-                  </p>
-                </div>
-
-                <div className="rounded-xl bg-white p-4 dark:bg-slate-900">
-                  <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
-                    <Waves size={15} />
-                    Correlation
-                  </div>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">
-                    {result.glcm_features.correlation}
-                  </p>
-                </div>
-
-                <div className="rounded-xl bg-white p-4 dark:bg-slate-900">
-                  <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
-                    <ScanLine size={15} />
-                    Energy
-                  </div>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">
-                    {result.glcm_features.energy}
-                  </p>
-                </div>
-
-                <div className="rounded-xl bg-white p-4 dark:bg-slate-900">
-                  <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
-                    <Grid2X2 size={15} />
-                    Homogeneity
-                  </div>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">
-                    {result.glcm_features.homogeneity}
-                  </p>
-                </div>
-              </div>
-
-              <p className="mt-4 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                Nilai GLCM digunakan untuk menganalisis pola tekstur citra MRI.
-                Contrast menunjukkan perbedaan intensitas piksel, correlation
-                menunjukkan hubungan antar piksel, energy menunjukkan
-                keseragaman tekstur, dan homogeneity menunjukkan tingkat
-                kemiripan piksel.
-              </p>
-            </div>
-          )}
 
           {result.detections?.length > 0 && (
             <div>

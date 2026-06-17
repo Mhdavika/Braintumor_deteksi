@@ -67,7 +67,7 @@ export default function DetectionSection() {
 
         <div>
           <ResultCard
-            result={result}
+            result={result} 
             isLoading={isLoading}
             onDownloadPDF={handleDownloadPDF}
           />

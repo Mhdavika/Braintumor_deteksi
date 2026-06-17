@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Download, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+
 import { getDetectionHistoryById } from "@/features/detection/services/detectionService";
 import {
   DetectionHistory,
@@ -14,12 +15,12 @@ import {
 } from "@/features/detection/types/detection.type";
 import { downloadDetectionPDF } from "@/features/detection/utils/pdfGenerator";
 
-function getRiskStyle(risk?: string) {
-  if (risk === "Tinggi") {
+function getConfidenceStyle(level?: string) {
+  if (level === "Tinggi") {
     return "border-red-100 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300";
   }
 
-  if (risk === "Sedang") {
+  if (level === "Sedang") {
     return "border-yellow-100 bg-yellow-50 text-yellow-700 dark:border-yellow-900 dark:bg-yellow-950/40 dark:text-yellow-300";
   }
 
@@ -40,6 +41,15 @@ function isTumorResult(result: string) {
     lower !== "tidak terdeteksi" &&
     lower !== "tidak ada tumor"
   );
+}
+
+function getConfidenceLevelFromProbability(probability?: string) {
+  const value = Number(probability?.replace("%", ""));
+
+  if (Number.isNaN(value)) return "-";
+  if (value < 40) return "Rendah";
+  if (value < 70) return "Sedang";
+  return "Tinggi";
 }
 
 export default function RiwayatDetailPage() {
@@ -71,11 +81,17 @@ export default function RiwayatDetailPage() {
   async function handleDownloadPDF() {
     if (!data) return;
 
+    const confidenceLevel =
+      data.confidence_level ||
+      data.risk_level ||
+      getConfidenceLevelFromProbability(data.probability);
+
     const pdfResult: DetectionResult = {
       result: data.result,
       probability: data.probability,
       status: data.status,
-      risk_level: data.risk_level,
+      confidence_level: confidenceLevel,
+      risk_level: confidenceLevel,
       detections: data.detections || [],
       image_url: data.image_url,
       annotated_image_url: data.annotated_image_url || "",
@@ -116,6 +132,11 @@ export default function RiwayatDetailPage() {
   }
 
   const tumorDetected = isTumorResult(data.result);
+
+  const confidenceLevel =
+    data.confidence_level ||
+    data.risk_level ||
+    getConfidenceLevelFromProbability(data.probability);
 
   const imageToShow =
     viewMode === "detected" && data.annotated_image_url
@@ -227,7 +248,7 @@ export default function RiwayatDetailPage() {
 
             <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
               Gunakan mode Compare, Gambar Asli, dan Hasil Deteksi untuk
-              membandingkan area tumor yang ditandai oleh model.
+              membandingkan area yang ditandai oleh model.
             </p>
           </div>
 
@@ -264,12 +285,12 @@ export default function RiwayatDetailPage() {
               </div>
 
               <div
-                className={`rounded-3xl border p-5 shadow-sm ${getRiskStyle(
-                  data.risk_level
+                className={`rounded-3xl border p-5 shadow-sm ${getConfidenceStyle(
+                  confidenceLevel
                 )}`}
               >
                 <p className="text-sm">Status Risiko</p>
-                <p className="mt-2 text-2xl font-bold">{data.risk_level}</p>
+                <p className="mt-2 text-2xl font-bold">{confidenceLevel}</p>
               </div>
             </div>
 
