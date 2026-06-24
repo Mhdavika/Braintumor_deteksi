@@ -4,16 +4,17 @@ type LoadingProgressProps = {
 
 const steps = [
   {
+    key: "uploading",
+    label: "Upload gambar",
+  },
+  {
     key: "validating",
     label: "Validasi gambar",
+    
   },
   {
     key: "analyzing",
     label: "Analisis model YOLO",
-  },
-  {
-    key: "uploading",
-    label: "Upload gambar",
   },
   {
     key: "saving",

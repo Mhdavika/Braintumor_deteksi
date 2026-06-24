@@ -77,7 +77,7 @@ export function useDetection() {
       const startTime = Date.now();
 
       setLoadingStep("validating");
-      await delay(1200);
+      await delay(1500);
 
       const validation = validateMRIFile(file);
 
@@ -91,7 +91,7 @@ export function useDetection() {
       toast.info("Memulai proses deteksi...");
 
       setLoadingStep("analyzing");
-      await delay(2500);
+      await delay(2000);
 
       const detectionResult = await predictBrainTumor(file);
 
