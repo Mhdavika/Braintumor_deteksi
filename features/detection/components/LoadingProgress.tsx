@@ -10,7 +10,6 @@ const steps = [
   {
     key: "validating",
     label: "Validasi gambar",
-    
   },
   {
     key: "analyzing",
@@ -18,7 +17,7 @@ const steps = [
   },
   {
     key: "saving",
-    label: "Simpan riwayat",
+    label: "Simpan gambar",
   },
 ];
 

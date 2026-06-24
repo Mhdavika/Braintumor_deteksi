@@ -73,35 +73,32 @@ export function useDetection() {
       setErrorMessage("");
       setResult(null);
 
-      const minimumLoadingTime = getRandomDelay(5000, 10000);
+      const minimumLoadingTime = getRandomDelay(10000, 15000);
       const startTime = Date.now();
 
+      // Step 1: Uploading (Upload original image to Supabase)
+      setLoadingStep("uploading");
+      await delay(2000);
+      const imageUrl = await uploadImageToSupabase(file);
+
+      // Step 2: Validating (Validate the MRI file)
       setLoadingStep("validating");
-      await delay(1500);
-
+      await delay(4000);
       const validation = validateMRIFile(file);
-
       if (!validation.valid) {
         setErrorMessage(validation.message);
         toast.error(validation.message);
         setLoadingStep("idle");
         return;
       }
-
       toast.info("Memulai proses deteksi...");
 
+      // Step 3: Analyzing (Analyze using YOLO model)
       setLoadingStep("analyzing");
-      await delay(2000);
-
+      await delay(5000);
       const detectionResult = await predictBrainTumor(file);
 
-      setLoadingStep("uploading");
-      await delay(1500);
-
-      const imageUrl = await uploadImageToSupabase(file);
-
       let annotatedImageUrl = "";
-
       if (detectionResult.annotated_image) {
         annotatedImageUrl = await uploadBase64ImageToSupabase(
           detectionResult.annotated_image,
@@ -109,9 +106,9 @@ export function useDetection() {
         );
       }
 
+      // Step 4: Saving (Save detection record to database)
       setLoadingStep("saving");
       await delay(1500);
-
       await saveDetectionHistory({
         fileName: file.name,
         result: detectionResult,
